@@ -75,3 +75,44 @@
 # may only use the libraries available on a fresh Python 2.7 install.  I doubt
 # you will need to use any libraries at all as this is just an algorithmic
 # challenge.
+import sys
+from sys import stdin
+from sys import stdout
+from StringIO import StringIO
+from array import array
+import pdb
+
+max=0
+counter = 0
+m = int(raw_input())
+n = int(raw_input())
+matrix =[]
+visted=[[None for x in range(n)] for y in range(m)] #initiaizing m x n array 
+directions = [(0, 1), (0, -1), (1, 0),(1, 1),(1, -1),(-1, 0), (-1, 1), (-1, -1)] #Assigning what directions to go to
+
+for i in range(m):
+	for j in range(n):
+		visted[i][j]=0 #assigning all locations to visit to 0
+		
+for i in range(m):
+        matrix.append(map(int, stdin.readline().strip().split(' '))) #Storing reference matrix by reading line by line and splitting by ' '
+##Find max area function##########################################################################################
+def Find(matrix, visted, x, y):
+    global counter
+    global max
+    if x<0 or x>=m or y<0 or y>=n or visted[x][y] == 1 or matrix[x][y] == 0: #Checking to see if gone beyond constraints of matrix, if it has already been visted or if the current location is 0
+        return
+
+    counter += 1
+    if counter > max: #Checking to see if the current counter is larger then the max, if so max= current counter
+		max=counter
+    visted[x][y] = matrix[x][y]
+	
+    for dir in directions:
+		Find(matrix, visted, x+dir[0], y+dir[1])
+###################################################################################################################
+for i in range(m):
+    for j in range(m):
+        Find(matrix, visted, i, j)
+        counter = 0
+print max
